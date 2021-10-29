@@ -19,5 +19,4 @@ describe Journey do
       expect(journey_incomplete.finish("Cuba")).to eq "Cuba"
     end
   end
-
 end

@@ -22,5 +22,4 @@ class Journey
   def journey_completed?
     !!(@entry_station && @exit_station)
   end
-
 end
