@@ -25,12 +25,14 @@ describe JourneyLog do
     it 'expects current @journey to have no value when called' do
       subject.start(entry_station)
       subject.finish
+      subject.add_journey
       expect(subject.current_journey).to eq nil
     end
 
     it 'logs @journey within @journey_list' do
       subject.start(entry_station)
-      expect { subject.finish }.to change { subject.journey_list.length }.by(1)
+      subject.finish
+      expect { subject.add_journey }.to change { subject.journey_list.length }.by(1)
     end
   end
 end

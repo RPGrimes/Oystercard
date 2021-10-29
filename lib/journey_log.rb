@@ -12,19 +12,23 @@ class JourneyLog
     @current_journey = Journey.new(entry_station)
   end
 
-  def finish
-    add_journey
+  def finish(exit_station = nil)
+    @current_journey.finish(exit_station)
   end
-
-  private
 
   def add_journey
     @journey_list << @current_journey
     reset_journey
   end
 
+  private
 
   def reset_journey
     @current_journey = nil
   end
+
+  def active_journey
+    @current_journey.nil? ? Journey.new : @current_journey
+  end
+
 end

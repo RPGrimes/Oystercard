@@ -33,6 +33,7 @@ class Oystercard
     @journey_log.start if @journey_log.current_journey == nil
     finish_journey(exit_station) 
     close_down_journey
+    @journey_log.add_journey
   end
 
   private
@@ -54,7 +55,7 @@ class Oystercard
   end
 
   def finish_journey(station)
-    @journey_log.current_journey.finish(station) 
+    @journey_log.finish(station) 
   end
 
   def close_down_journey
