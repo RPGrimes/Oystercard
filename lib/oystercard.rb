@@ -1,64 +1,68 @@
+require_relative 'journey'
+require_relative 'journey_log'
+require_relative 'station'
+
 class Oystercard
 
-  attr_reader :balance, :max_balance, :min_balance, :entry_station, :exit_station, :journey_list
+  attr_reader :balance, :max_balance, :min_balance, :journey_log
 
   DEFAULT_BALANCE = 0
   MAX_BALANCE = 90
   MIN_BALANCE = 1
   
-  def initialize(balance = DEFAULT_BALANCE, max_balance = MAX_BALANCE, min_balance = MIN_BALANCE, entry_station = nil, exit_station = nil)
+  def initialize(balance = DEFAULT_BALANCE, max_balance = MAX_BALANCE, min_balance = MIN_BALANCE)
     @balance = balance
     @max_balance = max_balance
     @min_balance = min_balance
-    @entry_station = entry_station
-    @exit_station = exit_station
-    @journey_list = []
+    @journey_log = JourneyLog.new
   end
 
   def top_up(value)
-    fail "this top_up would exceed maximum balance" if value+balance > @max_balance
+    top_up_check(value)
     @balance += value
   end
 
   def touch_in(entry_station)
-    forget_last_exit
-    fail 'Error: insufficient funds' if @balance < @min_balance
-    @entry_station = entry_station
+    apply_fine_if_active_journey
+    touch_in_check
+    @journey_log.start(entry_station)
     current_balance
   end
 
   def touch_out(exit_station)
-    deduct(@min_balance)
-    @exit_station = exit_station
-    add_journey_hash
+    @journey_log.start if @journey_log.current_journey == nil
+    finish_journey(exit_station) 
+    close_down_journey
+  end
+
+  private
+
+  def top_up_check(value)
+    fail "this top_up would exceed maximum balance" if value + @balance > @max_balance
+  end
+
+  def touch_in_check
+    fail 'Error: insufficient funds' if @balance < @min_balance
+  end
+
+  def current_balance 
+    "your current balance is £#{@balance}"
+  end
+
+  def apply_fine_if_active_journey
+    close_down_journey if @journey_log.current_journey != nil
+  end
+
+  def finish_journey(station)
+    @journey_log.current_journey.finish(station) 
+  end
+
+  def close_down_journey
+    deduct(@journey_log.current_journey.fare)
     current_balance
-    forget_last_entrance
-  end
-end
-
-  def in_journey?
-    !!entry_station
   end
 
-private
-
-def current_balance 
-  "your current balance is £#{@balance}"
-end
-
-def deduct(value)
-  fail "this journey would take your balance below the minimum balance" if balance-value < @min_balance
-  @balance -= value
-end
-
-def forget_last_exit
-  @exit_station = nil
-end
-
-def forget_last_entrance
-  @entry_station = nil
-end
-
-def add_journey_hash
-  @journey_list << { entry_station: @entry_station, exit_station: @exit_station }
+  def deduct(value)
+    @balance -= value
+  end
 end
