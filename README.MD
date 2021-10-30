@@ -147,109 +147,61 @@ In order to use public transport
 As a customer
 I want money on my card
 
-Class: card & ?? Money
-Noun(s): money & card ; Verb: on (balance)
-method: balance
-
 2)
 In order to keep using public transport
 As a customer
 I want to add money to my card
-
-class: card
-Nouns: money & card.  Verb: add
-method: card.add (money)
 
 3)
 In order to protect my money
 As a customer
 I don't want to put too much money on my card
 
-Class: card
-Nouns: money & card.  Verb: to put
-method: card.limit (money)
-
 4)
 In order to pay for my journey
 As a customer
 I need my fare deducted from my card
-
-Class: journey
-Nouns: fare & card.  Verb: deducted
-method journey.fare.deduct (balance - fare)
 
 5)
 In order to get through the barriers
 As a customer
 I need to touch in and out
 
-Class: station  or journey with 2 barrier methods.  Class: card
-Noun: I   Verb: to touch
-method(s): touch in 
-touch out
-
 6)
 In order to pay for my journey
 As a customer
 I need to have the minimum amount for a single journey
-
-Class: journey
-Noun: journey, balance.  Verb: to have
-method: check balance >= fare
 
 7)
 In order to pay for my journey
 As a customer
 I need to pay for my journey when it's complete
 
-Class: journey
-noun: journey.  Verb: to pay
-method: balance.pay (balance - fare)
-
 8)
 In order to pay for my journey
 As a customer
 I need to know where I've travelled from
-
-class: Station   
-noun: I  verb: travelled from
-method: station.origin (based on touch_in)
 
 9)
 In order to know where I have been
 As a customer
 I want to see to all my previous trips
 
-class: journey
-noun: I, trips  Verb: see
-method: journey.view_trips
-
 10)
 In order to know how far I have travelled
 As a customer
 I want to know what zone a station is in
-
-Class: station
-Noun: I, zone, station.  Verb to know
-method: station.zone (based on touch in?)
 
 11)
 In order to be charged correctly
 As a customer
 I need a penalty charge deducted if I fail to touch in or out
 
-class: card, ?station (based on touch in / touch out methods)
-noun: charge, I.  Verb: deducted, to touch
-method: card.penalty
 
 12)
 In order to be charged the correct amount
 As a customer
 I need to have the correct fare calculated
-
-Class: journey
-noun: fare.  Verb: calculated
-Method: Journey.calculate_fare
 
 ```
 
